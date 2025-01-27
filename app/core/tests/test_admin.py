@@ -1,4 +1,4 @@
-#tests for the django admin modifications
+# tests for the django admin modifications
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
@@ -29,3 +29,18 @@ class AdminSiteTests(TestCase):
 
         self.assertContains(res, self.user.name)
         self.assertContains(res, self.user.email)
+    
+    def test_edit_user_page(self):
+        # test edit user page works
+        url = reverse('admin:core_user_change', args=[self.user.id])
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, 200)
+
+    def test_create_user_page(self):
+        # test create user page works
+        url = reverse('admin:core_user_add')
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, 200)
+
