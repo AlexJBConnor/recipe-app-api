@@ -11,7 +11,7 @@ Class-based views
     2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))""" 
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))"""
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularSwaggerView,
@@ -23,10 +23,13 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+from core import views as core_views
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),#
+    path('api/health-check/', core_views.health_check, name='health-check'),
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),
-    path('api/docs/', 
+    path('api/docs/',
          SpectacularSwaggerView.as_view(url_name='api-schema'),
          name='api-docs',
     ),
@@ -36,6 +39,6 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(
-        settings.MEDIA_URL, 
+        settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT,
     )
